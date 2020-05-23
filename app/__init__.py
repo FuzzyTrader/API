@@ -1,6 +1,8 @@
 from flask import Flask
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+from datetime import timedelta, datetime
 
 app = Flask(__name__)
 
@@ -9,7 +11,9 @@ if app.config["ENV"] == "production":
 else:
     app.config.from_object("config.DevelopmentConfig")
 
+jwt = JWTManager(app)
 flask_bcrypt = Bcrypt(app)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(app.config['JWT_ACCESS_TOKEN_EXPIRES'])
 
 mongo = MongoClient(app.config["MONGO_URI"])
 
