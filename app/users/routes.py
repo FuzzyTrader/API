@@ -6,9 +6,10 @@ from flask_jwt_extended import (JWTManager, create_access_token, create_refresh_
 
 @users.route("/ping", methods = ["GET"])
 def ping():
-    return jsonify({"success" : True,
-                    "response" : "pong!"
-                    }), 200
+    return jsonify({
+        "success" : True,
+        "response" : "pong!"
+    }), 200
 
 @users.route("/register", methods = ["POST"])
 def register():
@@ -19,17 +20,20 @@ def register():
     if existing_user is None:
         hashpass = flask_bcrypt.generate_password_hash(request.json["password"])
 
-        users.insert_one({"username" : request.json["username"],
-                          "password" : hashpass
-                        })
+        users.insert_one({
+            "username" : request.json["username"],
+            "password" : hashpass
+        })
         
-        return jsonify({"success"  : True,
-                        "response" : "User created!"
-                        }), 200
+        return jsonify({
+            "success"  : True,
+            "response" : "User created!"
+        }), 200
     
-    return jsonify({"success"  : False,
-                    "response" : "User already exists!"
-                    }), 400
+    return jsonify({
+        "success"  : False,
+        "response" : "User already exists!"
+    }), 400
 
 @users.route("/login", methods = ["POST"])
 def login():
@@ -42,10 +46,12 @@ def login():
             "token"   : access_token
         }
 
-        return jsonify({"success" : True,
-                        "data"    : logged_user
-                        }), 200
+        return jsonify({
+            "success" : True,
+            "data"    : logged_user
+        }), 200
     
-    return jsonify({"success" : False,
-                    "response": "Invalid username or password!"
-                    }), 401
+    return jsonify({
+        "success" : False,
+        "response": "Invalid username or password!"
+    }), 401

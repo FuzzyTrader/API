@@ -11,7 +11,7 @@ def ping():
 
 @stocks.route("/add", methods = ["POST"])
 # @jwt_required
-def add():
+def add_stocks():
     stocks = mongo.db.stocks
 
     new_stocks = request.json["stocks"]
@@ -40,4 +40,30 @@ def add():
     return jsonify({
         "success" : True,
         "response" : "Stocks were added to wallet!"
+    }), 200
+
+@stocks.route("/wallet", methods=["GET"])
+# @jwt_required
+def get_wallet():
+    stocks = mongo.db.stocks
+
+    user_stocks = stocks.find({ "username" : request.json["username"]})
+
+    if len(list(user_stocks)) == 0:
+        return jsonify({
+            "success" : False,
+            "response" : "No stock records were found for this user!"
+        }), 404
+    
+    result = []
+
+    for stock in user_stocks:
+        result.append({
+            "code"  : stock["stock"],
+            "amount": stock["amount"]
+        })
+    
+    return jsonify({
+        "success" : True,
+        "data"    : result
     }), 200
