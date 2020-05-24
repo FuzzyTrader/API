@@ -10,7 +10,7 @@ def ping():
     }), 200
 
 @stocks.route("/add", methods = ["POST"])
-# @jwt_required
+@jwt_required
 def add_stocks():
     stocks = mongo.db.stocks
 
@@ -43,7 +43,7 @@ def add_stocks():
     }), 200
 
 @stocks.route("/wallet", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_wallet():
     stocks = mongo.db.stocks
 
