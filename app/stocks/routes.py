@@ -1,5 +1,6 @@
 from app.stocks import stocks
 from flask import Flask, jsonify, request
+from flask_jwt_extended import jwt_required
 from app import mongo
 
 @stocks.route("/ping", methods = ["GET"])
