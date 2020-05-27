@@ -48,9 +48,10 @@ def add_stocks():
 def get_wallet():
     stocks = mongo.db.stocks
 
-    user_stocks = stocks.find({ "username" : request.json["username"]})
+    user_stocks = stocks.find({ "username" : request.args.get("username")})
+    list_stocks = list(user_stocks)
 
-    if len(list(user_stocks)) == 0:
+    if len(list_stocks) == 0:
         return jsonify({
             "success" : False,
             "response" : "No stock records were found for this user!"
@@ -58,7 +59,7 @@ def get_wallet():
     
     result = []
 
-    for stock in user_stocks:
+    for stock in list_stocks:
         result.append({
             "code"  : stock["stock"],
             "amount": stock["amount"]
